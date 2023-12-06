@@ -1,78 +1,78 @@
-#Project 2 Steps
-#Setup WordPress on a Google VM running Fedora linux
+# Project 2 Steps
+# Setup WordPress on a Google VM running Fedora linux
 
-#Ensure your system is up to date
+# Ensure your system is up to date
 sudo dnf update -y
 
-#Task 1: Install required programs and configure them
+# Task 1: Install required programs and configure them
 
-#Step 1: Install Apache 
+# Step 1: Install Apache 
 sudo dnf install httpd -y
 
-#Enable Apache service
+# Enable Apache service
 systemctl start httpd
 systemctl enable httpd
 
 
-#Step 2: Install PHP as well as other required extensions
+# Step 2: Install PHP as well as other required extensions
 
 dnf install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring php-curl php-pecl-imagick php-pecl-zip libzip -y
 
-#Enable php-fpm service
+# Enable php-fpm service
 systemctl start php-fpm
 systemctl enable php-fpm
 
-#Step 3: Install MariaDB
+# Step 3: Install MariaDB
 sudo install mariadb-server -y
 
-#Enable MariaDB
+# Enable MariaDB
 systemctl start mariadb
 systemctl enable mariadb
 
-#Step 4: create database and user for WordPress:
+# Step 4: create database and user for WordPress:
 
 #Access MariaDB shell
 sudo mysql
 
-#create a database and user for WordPress, in this case we are naming the database “linuxdb”, and the user “webapp”. Set it to whatever you’d like or need. Choose a strong password, ‘XXXXXXXXX’ is simply the example here.
+# create a database and user for WordPress, in this case we are naming the database “linuxdb”, and the user “webapp”. Set it to whatever you’d like or need. Choose a strong password, ‘XXXXXXXXX’ is simply the example here.
 
 create database linuxdb;
 grant all privileges on linuxdb.* to ‘webapp’@’localhost’ identified by ‘XXXXXXXXX’;
 
-#Exit MariaDB
+# Exit MariaDB
 exit;
 
-#Step 5: Install wget(skip this if you already have wget)
+# Step 5: Install wget(skip this if you already have wget)
 sudo dnf install wget
 
 
-#Task 2: Download and configure WordPress
+# Task 2: Download and configure WordPress
 
-#Step1: Navigate to /var/www/html directory
+# Step1: Navigate to /var/www/html directory
 cd /var/www/html/
 
-#If the directory tree or parts of it does not exist,
+# If the directory tree or parts of it does not exist,
 sudo mkdir /var/www
 cd /var/www
 sudo mkdir html
 cd html
 
 
-#Step 2: Download WordPress
+# Step 2: Download WordPress
 Sudo wget https://www.wordpress.org/latest/tar/gz
 
-#Step 3: Extract WordPress
+# Step 3: Extract WordPress
 Sudo tar -xvf latest.tar.gz
 
 #Step 4: Rename default config file
-Cd wordpress
+cd wordpress
 Sudo cp wp-config-sample.php wp-config.php
 
-#Step 5: edit wp-config with nano
+# Step 5: edit wp-config with nano
 Nano wp-config.php
 
-#Part 1:
-#Define database settings, shown below is the database we made before. Fill in with your own if you chose different names and passwords.
+# Part 1:
+# Define database settings, shown below is the database we made before. Fill in with your own if you chose different names and passwords.
 
 /** The name of the database for WordPress */
 define( 'DB_NAME', 'linuxdb' );
@@ -86,16 +86,16 @@ define( 'DB_PASSWORD', 'XXXXXXXXX' );
 /** Database hostname */
 define( 'DB_HOST', 'localhost' );
 
-#Part 2: Optional, but if you wish to disable FTP uploads to your site, in the same document add the following line to the end of the file
+# Part 2: Optional, but if you wish to disable FTP uploads to your site, in the same document add the following line to the end of the file
 define(‘FS_METHOD’,’direct’);
 
-#Save your changes and close the file.
+# Save your changes and close the file.
 
-#Step 6: Change permission and ownership of the WordPress directory
+# Step 6: Change permission and ownership of the WordPress directory
 chown -R apache:apache /var/www/html/wordpress
 chmod -R 755 /var/www/html/wordpress
 
-#Task 3: Access WordPress installation wizard using localhost
-#Check Google Console for VM public IP, and access it in the browser via http://insert public ip
-#Follow the steps in the installer.
+# Task 3: Access WordPress installation wizard using localhost
+# Check Google Console for VM public IP, and access it in the browser via http://insert public ip
+# Follow the steps in the installer.
 
